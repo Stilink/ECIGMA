@@ -7,7 +7,9 @@ def main():
         prom = sum(ar)/n
         ar.sort()
         suma=0
-        for i in range(n//2):
+        for i in range(n):
+            if(ar[i]>=prom):
+                break
             suma+= abs(ar[i]-prom)
         print("Set #"+str(cases))
         print("The minimum number of moves is "+str(int(suma))+".")

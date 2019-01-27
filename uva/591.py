@@ -13,6 +13,7 @@ def main():
             suma+= abs(ar[i]-prom)
         print("Set #"+str(cases))
         print("The minimum number of moves is "+str(int(suma))+".")
+        print()
         n = int(stdin.readline())
         cases += 1
         

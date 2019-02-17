@@ -2,47 +2,52 @@ import java.io.*;
 import java.util.*;
 
 public class uva_12442 {
-	private static Map<Integer,ArrayList<Integer>> clan;
-	private static int dfs(int s, boolean[] vi) {
-		vi[s-1]=true;
+	private static int[] clan;
+	private static boolean[] vi;
+	private static int dfs(int s) {
+		vi[s]=true;
 		int nodosAlcanzados = 1;
-		for(int v : clan.get(s)) {
-			if(!vi[v-1]) {
-				nodosAlcanzados=Math.max(nodosAlcanzados, dfs(v, vi))+1;
-				vi[v-1]=false;
-			}
+		if(!vi[clan[s]]) {
+			nodosAlcanzados+=dfs(clan[s]);
 		}
+		vi[s]=false;
 		return nodosAlcanzados;
 	}
+	
+	
 	public static void main(String[] args) throws Exception{
+		PrintWriter out = new PrintWriter(System.out);
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int cases = Integer.parseInt(br.readLine());
 		for(int c = 1; c<=cases; c++) {
 			int n = Integer.parseInt(br.readLine());
-			clan = new HashMap<Integer,ArrayList<Integer>>();
+			clan = new int[n];
+			vi = new boolean[n];
 			StringTokenizer stk;
 			for(int i = 0; i <n; i++) {
 				stk = new StringTokenizer(br.readLine());
 				int u = Integer.parseInt(stk.nextToken());
 				int v = Integer.parseInt(stk.nextToken());
-				clan.put(u,clan.getOrDefault(u,new ArrayList<Integer>()));
-				clan.get(u).add(v);
+				clan[u-1]=v-1;
+				vi[u-1]=false;
 			}
 			int maximo = Integer.MIN_VALUE;
 			int nodo = Integer.MAX_VALUE;
-			for(int s : clan.keySet()) {
-				int res = dfs(s,new boolean[n]);
+			for(int i=0; i<n;i++ ) {
+				int res = dfs(i);
 				if(res>maximo) {
 					maximo=res;
-					nodo=s;
+					nodo=i;
 				}else if(res==maximo) {
-					nodo=Math.min(s, nodo);
+					nodo=Math.min(i, nodo);
 				}
 			}
-			System.out.println("Case "+c+": "+nodo);
+			out.println("Case "+c+": "+(nodo+1));
 			
 			
 		}
+		out.close();
+		out.flush();
 		
 
 	}

@@ -2,15 +2,17 @@ from sys import stdin
 ans = {}
 def solve(cadena):
     if("".join(cadena) in ans):
-        return ans[cadena]
+        return ans["".join(cadena)]
     control = cadena.count("o")
-    if(control <=1 ):
+    """if(control <=1 ):
         ans["".join(cadena)]=control
-        return control
+        return control"""
     izquierda = len(cadena)
     derecha = len(cadena)
     for i in range(12):
-        if cadena[i]=='-':continue
+        
+        if cadena[i]=='-':
+            continue
         if( i-2>=0):
             if(cadena[i-1]=="o" and cadena[i-2]=="-"):
                     temp = cadena.copy()
@@ -23,8 +25,8 @@ def solve(cadena):
                     else:
                         izquierda = min(solve(cadena),izquierda)
                         ans[Sizquierda] = izquierda
-                    cadena = temp.copy()
-        if(i+2<len(cadena)):
+                    cadena = temp
+        if(i+1<len(cadena)):
             if(cadena[i+1]=="-" and cadena[i-1]=="o"):
                     temp = cadena.copy()
                     cadena[i]="-"
@@ -36,8 +38,8 @@ def solve(cadena):
                     else:
                         derecha = min(derecha,solve(cadena))
                         ans[Sderecha]= derecha
-                    cadena = temp.copy()
-    ans["".join(cadena)]=min(izquierda,derecha)
+                    cadena = temp
+    ans["".join(cadena)]=min(control,min(izquierda,derecha))
     return ans["".join(cadena)]
 def main():
     cases = int(stdin.readline())

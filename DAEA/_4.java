@@ -36,7 +36,7 @@ public class _4 {
 		int suma = positivos + negativos;
 		float p = (float)(positivos)/(float)(suma);
 		float n = (float)(negativos)/(float)(suma);
-		System.out.println("Cantidad de positivos: "+positivos+" Cantidad de negativos: "+negativos+" Razón positivos sobre el total: "+p+" Razón negativos sobre el total: "+n);
+		System.out.println("Cantidad de positivos: "+positivos+" Cantidad de negativos: "+negativos+" RazÃ³n positivos sobre el total: "+p+" RazÃ³n negativos sobre el total: "+n);
 		
 	}
 	
@@ -63,7 +63,7 @@ public class _4 {
 	
 	public void removeOne() {
 		int n = (int) (Math.random() * 100)+1;
-		if(n>66) {
+		if(n>75) {
 			if(negativos.size()<1) return;
 			int num = negativos.remove(negativos.size()-1);
 			negativosRetirados.add(num);

@@ -1,20 +1,30 @@
 import java.util.*;
 import java.io.*;
-
-public class Suffix_Array {
-	static int[] RA, tempRA, SA,tempSA, c;
+ 
+class Suffix_Array {
+ 
+	static int[] RA, tempRA, SA,tempSA, c,phi,LCP,PLCP;
 	static int n;
 	static char[] T;
-	public static void main(String[] args) throws IOException {
-		T = ("banana"+"$").toCharArray();
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int cases = Integer.parseInt(br.readLine());
+		for(int c = 0; c<cases; c++) {
+		T = (br.readLine()+"$").toCharArray();
 		n = T.length;
 		RA = new int[n]; tempRA = new int[n];
 		SA = new int[n]; tempSA = new int[n];
+		LCP = new int[n]; PLCP = new int[n];
 		buildSA();
-		for(int i = 0; i < n; i++){
+		LCP();
+		/*System.out.println(Arrays.toString(LCP));
+		System.out.println(Arrays.toString(SA));*/
+		/*for(int i = 0; i < n; i++){
 			System.out.print(SA[i]+" ");
+			System.out.print(LCP[i]+" ");
 			System.out.println(String.valueOf(T).substring(SA[i]));
-		}
+		}*/
+		System.out.println(countDistinctSubstring(T)-T.length);}
 	}
  
 	static void radixSort(int k){
@@ -49,5 +59,34 @@ public class Suffix_Array {
 			if (RA[SA[n-1]] == n-1) break;
 		}
 	}
+ 
+	static void LCP(){
+		int L;
+		phi = new int[n];
+		phi[SA[0]] = -1;
+		for(int i = 1; i < n; i++)
+			phi[SA[i]] = SA[i-1];
+ 
+		for(int i = L=0; i <n;i++){
+			if (phi[i] == -1) {PLCP[i] = 0; continue;}
+			while(T[i+L] == T[phi[i] + L]) L++;
+			PLCP[i] = L;
+			L = Math.max(L-1,0);
+		}
+		for(int i = 0; i < n; i++)
+			LCP[i] = PLCP[SA[i]];
+	}
+	
+	static int countDistinctSubstring(char[] txt) {
+		int n = txt.length;
+		
+		
+		int result = n-SA[0];
+		for(int i = 1; i < n; i++) {
+			result += (n-SA[i])-LCP[i];
+		}
+		return result;
+	}
+ 
+ 
 }
-

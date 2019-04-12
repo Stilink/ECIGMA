@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
  
-class Suffix_Array {
+class New_Distinct_Substrings {
  
 	static int[] RA, tempRA, SA,tempSA, c,phi,LCP,PLCP;
 	static int n;

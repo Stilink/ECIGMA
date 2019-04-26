@@ -6,12 +6,22 @@ class uva_760 {
 	static int[] RA, tempRA, SA,tempSA, c,phi,LCP,PLCP;
 	static int n;
 	static char[] T;
+	static Set<String> ansSet = new HashSet<String>();
+	static ArrayList<String> ansPrint = new ArrayList<String>();
 	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		File FILE = new File("input.txt");
+		BufferedReader br = FILE.exists() ? new BufferedReader(new FileReader(FILE)) :  new BufferedReader(new InputStreamReader(System.in));
+		
+		boolean first = true;
 		while(true) {
+			if( !first )
+				System.out.println();
+			first = false;
 			String linea1 = br.readLine();
+			if(linea1==null) break;
 			String linea2 = br.readLine();
-			if(linea1.length()==0 || linea2.length()==0) break;
+			if(linea2==null) break;
 			T = (linea1+"#"+linea2+"$").toCharArray();
 			n = T.length;
 			RA = new int[n]; tempRA = new int[n];
@@ -19,41 +29,53 @@ class uva_760 {
 			LCP = new int[n]; PLCP = new int[n];
 			buildSA();
 			LCP();
-			int maxi = Integer.MIN_VALUE;
+			ansSet.clear();
+			ansPrint.clear();
+			int maxi = LCP[0];
 			ArrayList<Integer> inds = new ArrayList<Integer>();
 			for(int i = 0; i<n; i++) {
-				if(LCP[i]>maxi) {
+				if(i==0) continue;
+				if(LCP[i]>maxi && linea1.contains(String.valueOf(T).substring(SA[i-1],SA[i-1]+LCP[i])) && linea2.contains(String.valueOf(T).substring(SA[i-1],SA[i-1]+LCP[i]))) {
+
 					maxi=LCP[i];
-					inds.clear();
-					inds.add(i);
+
+					ansSet.clear();
+					ansPrint.clear();
+
+					ansSet.add(String.valueOf(T).substring(SA[i-1],SA[i-1]+LCP[i]));
+					ansPrint.add(String.valueOf(T).substring(SA[i-1],SA[i-1]+LCP[i]));
 				}else if(LCP[i]==maxi) {
-					inds.add(i);
-				}
-			}
-			if(inds.size()==0) {
-				System.out.println("No common sequence.");
-				System.out.println();
-				br.readLine();
-				continue;
-			}
-			for(int i : inds) {
-				if(0<=i-1 && i-1<n) {
-					String subs = String.valueOf(T).substring(SA[i-1],SA[i-1]+LCP[i]);
-					if(subs.length()>linea2.length()+2) {
-						if(linea2.contains(subs)) {
-							System.out.println(subs);
-						}
-					}else{
-						if(linea1.contains(subs)) {
-							System.out.println(subs);
-						}
+
+
+					if(!ansSet.contains(String.valueOf(T).substring(SA[i-1],SA[i-1]+LCP[i]))) {
+						ansPrint.add(String.valueOf(T).substring(SA[i-1],SA[i-1]+LCP[i]));
+						ansSet.add(String.valueOf(T).substring(SA[i-1],SA[i-1]+LCP[i]));
 					}
 					
 				}
 			}
-			System.out.println();
-			br.readLine();
+			/*System.out.println(ansSet.size()+" Set: "+ansSet.toString());
+			System.out.println(ansPrint.toString());*/
+			if(ansSet.size()==1 && ansSet.contains("")) {
+				
+
+				System.out.println("No common sequence.");
+				String blank = br.readLine();
+				if(blank==null) break;
+				continue;
+			}
+			
+			for (String i : ansPrint) {
+				if(linea1.contains(i) && linea2.contains(i)) {
+					System.out.println(i);
+				}
+				
+			}
+
+			String blank = br.readLine();
+			if(blank==null) break;
 		}
+		br.close();
 	}
  
 	static void radixSort(int k){
